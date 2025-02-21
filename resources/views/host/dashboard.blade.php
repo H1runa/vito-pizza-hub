@@ -58,6 +58,9 @@
         <form method="GET" action="{{route('logout')}}">
             <button type="submit">Logout</button>
         </form>
+        <form method="GET" action="{{route('dinetable.create')}}">
+            <button type="submit">Add</button>
+        </form>
 
     </footer>
 </body>
