@@ -23,6 +23,16 @@
                     <tr>
                         <td>{{$t->seatCount}}</td>
                         <td>{{$t->availability}}</td>
+                        <td>
+                            <a href="{{route('dinetable.edit', $t->tableID)}}">Edit</a>
+                        </td>
+                        <td>
+                            <form method="POST" action="{{route('dinetable.delete', $t->tableID)}}">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit">Delete</button>
+                            </form>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
