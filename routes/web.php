@@ -20,6 +20,9 @@ Route::delete('/dinetable/{id}', [DineTableController::class, 'delete'])->name('
 //host-reservation
 Route::get('/reservation/create', [ReservationController::class, 'create'])->name('reservation.create');
 Route::post('/reservation/store', [ReservationController::class, 'store'])->name('reservation.store');
+Route::get('/reservation/{id}/edit', [ReservationController::class, 'edit'])->name('reservation.edit');
+Route::put('/reservation/{id}', [ReservationController::class, 'update'])->name('reservation.update');
+Route::delete('/reservation/{id}', [ReservationController::class, 'delete'])->name('reservation.delete');
 
 //api-routes
 Route::get('api/get-customer-name', [CustomerController::class, 'getFullName'])->name('api.customer.name');

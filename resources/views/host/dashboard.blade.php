@@ -69,6 +69,14 @@
                         <td>{{$r->reserveDate}}</td>
                         <td>{{$r->startTime}}</td>
                         <td>{{$r->endTime}}</td>
+                        <td><a href="{{route('reservation.edit', $r->resID)}}">Edit</a></td>
+                        <td>
+                            <form action="{{route('reservation.delete', $r->resID)}}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit">Delete</button>
+                            </form>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>

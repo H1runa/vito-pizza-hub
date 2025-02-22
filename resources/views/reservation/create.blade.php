@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Add Reservation</title>
     <script>
+        //disables tables with overlapping reservation times
         function checkAvailability(){            
             const date = document.getElementById('date').value;
             const stime = document.getElementById('stime').value;
@@ -21,9 +22,9 @@
                 const r_etime = reservation.endTime;
 
                 if(date==r_date){
-                    if(stime>=r_stime && etime<=r_etime){
+                    if(stime>=r_stime && stime<=r_etime){
                         nonoTables.push(reservation.tableID);
-                    } else if (etime<=r_etime && etime>=r_etime){
+                    } else if (etime<=r_etime && etime>=r_stime){
                         nonoTables.push(reservation.tableID);
                     }
                 }
