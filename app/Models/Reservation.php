@@ -11,7 +11,7 @@ class Reservation extends Model
     public $incrementing = true;
     protected $keyType = 'int';
     public $timestamps = false;
-    protected $fillable = ['reserveDate', 'reserveTime', 'staffID', 'cusID', 'tableID'];
+    protected $fillable = ['reserveDate', 'startTime', 'endTime', 'staffID', 'cusID', 'tableID'];
 
     public function customer(){
         return $this->belongsTo(Customer::class, 'cusID', 'cusID');

@@ -16,6 +16,9 @@
                 <tr>
                     <th>Seat Count</th>
                     <th>Availability</th>
+                    <th><form method="GET" action="{{route('dinetable.create')}}">
+                        <button type="submit">Add</button>
+                    </form></th>
                 </tr>
             </thead>
             <tbody>
@@ -49,7 +52,14 @@
                 <tr>
                     <th>Customer</th>
                     <th>Date</th>
-                    <th>Time</th>                                        
+                    <th>Start Time</th>                                        
+                    <th>End Time</th>
+                    <th>
+                        <form action="{{route('reservation.create')}}" method="GET">
+                            @csrf
+                            <button type="submit">Add</button>
+                        </form>
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -57,7 +67,8 @@
                     <tr>
                         <td>{{$r->customer->firstName ?? 'Not'}} {{$r->customer->lastName ?? 'Found'}}</td>
                         <td>{{$r->reserveDate}}</td>
-                        <td>{{$r->reserveTime}}</td>
+                        <td>{{$r->startTime}}</td>
+                        <td>{{$r->endTime}}</td>
                     </tr>
                 @endforeach
             </tbody>
@@ -68,9 +79,7 @@
         <form method="GET" action="{{route('logout')}}">
             <button type="submit">Logout</button>
         </form>
-        <form method="GET" action="{{route('dinetable.create')}}">
-            <button type="submit">Add</button>
-        </form>
+        
 
     </footer>
 </body>
