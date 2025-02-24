@@ -1,1 +1,1 @@
-import './bootstrap';
+import './bootstrap';  // Import Laravel Bootstrap helper
