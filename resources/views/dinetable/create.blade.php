@@ -7,26 +7,23 @@
     <title>Add Table</title>
 </head>
 <body>
-    <h3>Add Table</h3>
-    <form action="{{route('dinetable.store')}}" method="POST">
-        @csrf
-        <table>
-            <tr>
-                <td><label>Number of Seats : </label></td>
-                <td><input type="number" name="seats" id="seats"><br></td>
-            </tr>
-            <tr>
-                <td><label>Availability: </label></td>
-                <td>
-                    <select name="ava" id="ava">
-                        <option value="True">True</option>
-                        <option value="False">False</option>
-                    </select>
-                </td>
-            </tr>
-        </table>                                
-        <br>
-        <button type="submit">Submit</button>
+    {{-- <h3>Add Table</h3> --}}
+    <form id="addTableForm" action="{{ route('dinetable.store') }}" method="POST" class="p-4 border shadow-sm bg-light">
+      @csrf
+      <div class="mb-3">
+          <label for="seats" class="form-label">Seat Count</label>
+          <input type="number" class="form-control border-0 shadow-sm" name="seats" id="seats">
+      </div>
+  
+      <div class="mb-3">
+          <label for="ava" class="form-label">Availability</label>
+          <select class="form-select border-0 shadow-sm" name="ava" id="ava">
+              <option value="True">True</option>
+              <option value="False">False</option>
+          </select>
+      </div>
     </form>
+  
+  
 </body>
 </html>

@@ -9,7 +9,7 @@ use App\Models\Customer;
 
 class ReservationController extends Controller
 {
-    public function create(){   
+    public function create(Request $request){   
         //code to check if the host is logged in
         if(!session()->has("system_user_id" ) || !session('job_title')=='host'){
             return redirect()->route("auth.login");
@@ -17,6 +17,15 @@ class ReservationController extends Controller
         
         $tables = DineTable::all();
         $reservations = Reservation::all();
+
+        // Force JSON response even if Laravel doesn't detect AJAX properly
+        if ($request->expectsJson()) {
+        return response()->json([
+            'html' => view('reservation.create', compact('reservations', 'tables'))->render(),
+            'reservations' => $reservations,
+            'tables' => $tables
+        ]);
+    }
 
         return view('reservation.create', compact('tables','reservations'));
     }
@@ -52,7 +61,7 @@ class ReservationController extends Controller
         return redirect()->route('host.dashboard')->with('success','Reservation added');
     }
 
-    public function edit($id){
+    public function edit(Request $request, $id){
         //code to check if the host is logged in
         if(!session()->has("system_user_id" ) || !session('job_title')=='host'){
             return redirect()->route("auth.login");
@@ -64,8 +73,15 @@ class ReservationController extends Controller
         $tables = DineTable::all();
         $customer = Customer::find($reservation->cusID);
 
-        
-
+        if($request->expectsJson()){
+            return response()->json([
+                'html' => view('reservation.edit', compact('reservation', 'customer', 'tables', 'reservations'))->render(),
+                'reservation' => $reservation,
+                'reservations' => $reservations,
+                'tables' => $tables,
+                'customer' => $customer
+            ]);
+        }
         return view('reservation.edit', compact('reservation', 'customer', 'tables', 'reservations'));
     }
 

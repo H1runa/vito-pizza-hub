@@ -34,7 +34,7 @@ class DineTableController extends Controller
             'staffID' => session('system_user_id')
         ]);
 
-        return redirect()->route('dinetable.create')->with('success','Dine Table added');
+        return redirect()->route('host.dashboard')->with('success','Dine Table added');
 
     }
 

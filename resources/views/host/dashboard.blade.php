@@ -4,9 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+
     <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>        
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">    
 
     {{-- DataTables --}}
     <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.bootstrap5.min.css">
@@ -17,9 +20,30 @@
     {{-- Custom Fonts --}}
     <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
 
-
-
     <title>Vito Host Dashboard</title>
+
+    <style>
+        body {
+            position: relative;
+            background: url('{{ asset('images/background.png') }}') no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;
+            margin: 0;
+        }
+    
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.6); /* Semi-transparent black overlay */
+            z-index: -1; /* Ensure overlay is behind the content */
+        }
+    </style>
+    
+    
 </head>
 <body>  
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -43,33 +67,33 @@
 
 
     <div class="container mx-auto m-5">
-        <ul class="nav nav-tabs" id="contentTab" role="tablist">
+        <ul class="nav nav-pills" id="contentTab" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="table-tab" data-bs-toggle='tab' data-bs-target="#tables" type="button">
-                    Tables
-                </button>
-            </li>   
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="reservation-tab" data-bs-toggle='tab' data-bs-target="#reservations" type="button">
+                <button class="nav-link active" id="reservation-tab" data-bs-toggle='tab' data-bs-target="#reservations" type="button">
                     Reservations
                 </button>
             </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="table-tab" data-bs-toggle='tab' data-bs-target="#tables" type="button">
+                    Tables
+                </button>
+            </li>               
         </ul>
         <div class="tab-content" id="tabContent">
-            <div class="tab-pane fade show active" id="tables" role="tabpanel">
+            <div class="tab-pane fade" id="tables" role="tabpanel">
                 <div id="table-list" class="mt-3">                    
-                    {{-- <h3>Tables List</h3> --}}
+                    {{-- Tables List --}}
                     <table border="1" class="datatable table table-bordered">
                         <thead>
                             <tr>                                
                                 <th class="text-center">Seat Count</th>
                                 <th class="text-center">Availability</th>
-                                <th class="text-center"><form method="GET" action="{{route('dinetable.create')}}">
+                                <th class="text-center">    
                                     Actions: 
-                                    <button class="btn p-0 bg-transparent border-0 ms-2" type="submit">                            
+                                    <button class="btn p-0 bg-transparent border-0 ms-2 table-add-btn" type="submit">                            
                                         <i class="bi bi-plus-square"></i>
                                     </button>
-                                </form></th>
+                                </th>
                                 
                             </tr>
                         </thead>
@@ -79,13 +103,13 @@
                                     <td class="text-center">{{$t->seatCount}}</td>
                                     <td class="text-center">{{$t->availability}}</td>
                                     <td class="d-flex align-items-center justify-content-center">
-                                        <a class="me-2" href="{{route('dinetable.edit', $t->tableID)}}">
-                                            <i class="bi bi-pencil"></i>
-                                        </a>
+                                        <button class="btn p-0 bg-transparent border-0 edit-btn me-2" data-id='{{$t->tableID}}'>
+                                            <i class="bi bi-pencil text-primary"></i>
+                                        </button>
+                                        <button onclick="confirmDelete(this)" class="btn p-0 bg-transparent border-0" type="submit"><i class="bi bi-trash text-danger"></i></button>
                                         <form method="POST" action="{{route('dinetable.delete', $t->tableID)}}">
                                             @csrf
-                                            @method('DELETE')
-                                            <button class="btn p-0 bg-transparent border-0" type="submit"><i class="bi bi-trash text-danger"></i></button>
+                                            @method('DELETE')                                            
                                         </form>
                                     </td>
                                     
@@ -95,7 +119,7 @@
                     </table>
                 </div>
             </div>
-            <div class="tab-pane fade" id="reservations" role="tabpanel">
+            <div class="tab-pane fade show active" id="reservations" role="tabpanel">
                 <div id="reservation-list" class="mt-3">
                     {{-- <h3>Reservation List</h3> --}}
                     <table border="1" class="table table-bordered datatable">
@@ -105,15 +129,10 @@
                                 <th class='text-center'>Date</th>
                                 <th class='text-center'>Start Time</th>                                        
                                 <th class='text-center'>End Time</th>
-                                <th class='text-center'>                                    
-                                    <form action="{{route('reservation.create')}}" method="GET">
-                                        @csrf
+                                <th class='text-center'>                                                                        
                                         Actions: 
-                                        <button type="submit" class="btn bg-transparent p-0 border-0"><i class="bi bi-plus-square ms-2"></i></button>
-                                    </form>
-                                </th>
-                                
-                                
+                                        <button type="submit" class="btn bg-transparent p-0 border-0 reservation-add-btn"><i class="bi bi-plus-square ms-2"></i></button>                                    
+                                </th>                                                                
                             </tr>
                         </thead>
                         <tbody>
@@ -124,11 +143,13 @@
                                     <td class='text-center'>{{$r->startTime}}</td>
                                     <td class='text-center'>{{$r->endTime}}</td>
                                     <td class='d-flex justify-content-center align-items-center'>
-                                        <a href="{{route('reservation.edit', $r->resID)}}"><i class="bi bi-pencil me-2"></i></a>
+                                        <button class="btn p-0 bg-transparent border-0 reservation-edit-btn me-2" data-id='{{$r->resID}}'>
+                                            <i class="bi bi-pencil text-primary"></i>
+                                        </button>
+                                        <button onclick="confirmDelete(this)" type="submit" class="btn bg-transparent border-0 p-0"><i class="bi bi-trash text-danger"></i></button>
                                         <form action="{{route('reservation.delete', $r->resID)}}" method="POST">
                                             @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn bg-transparent border-0 p-0"><i class="bi bi-trash text-danger"></i></button>
+                                            @method('DELETE')                                            
                                         </form>
                                     </td>
                                     
@@ -145,11 +166,11 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editModalTitle">Title here</h5>
+                    {{-- <h5 class="modal-title" id="editModalTitle">Title here</h5> --}}
                     <button class="btn-close" type="button" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    
+
                 </div>
             </div>
         </div>
@@ -171,6 +192,309 @@
             });
         });
     </script>
+
+    {{-- Edit Table Modal Script --}}
+    <script>
+        $(document).ready(function(){
+            $('.edit-btn').on('click', function(){
+                let tableID = $(this).data('id');
+                let url = '/dinetable/'+tableID+'/edit';
+
+                // alert(tableID);
+
+                fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'text/html'
+                    }
+                })
+                .then(response => {
+                    if (!response.ok){
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(html=>{
+                    Swal.fire({
+                        title: "Edit Table",
+                        html: html,
+                        showCancelButton: true,
+                        focusConfirm: false,
+                        preConfirm: () => {
+                            $('#editTableForm').submit();
+                        }
+                    })
+                })
+                .catch(error=>{
+                    console.error('Error loading the edit form', error);
+                    alert('Edit form not loaded');
+                })
+            })
+        })
+    </script>
+
+    {{-- Add Table Modal Script --}}
+    <script>
+        $(document).ready(function(){
+            $('.table-add-btn').on('click', function(){                
+                let url = '/dinetable/create';               
+                
+                fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'text/html'
+                    }
+                })
+                .then(response => {
+                    if (!response.ok){
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(html=>{
+                    Swal.fire({
+                        title: "Add Table",
+                        html: html,
+                        showCancelButton: true,
+                        focusConfirm: false,
+                        preConfirm: () => {
+                            $('#addTableForm').submit();
+                        }
+                    })
+                })
+                .catch(error=>{
+                    console.error('Error loading the edit form', error);
+                    alert('Edit form not loaded');
+                })
+            })
+        })
+    </script>
+
+    {{-- Edit Reservation Modal Script --}}
+    <script>
+        $(document).ready(function(){
+            $('.reservation-edit-btn').on('click', function(){
+                let resID = $(this).data('id');
+                let url = '/reservation/'+resID+'/edit';
+
+                // alert(tableID);
+
+                fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'Application/json'
+                    }
+                })
+                .then(response => {
+                    if (!response.ok){
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data=>{
+                    Swal.fire({
+                        title: 'Edit Reservation',
+                        html: data.html,
+                        showCancelButton: true,
+                        focusConfirm: false,
+                        preConfirm: ()=>{
+                            $('#editReservationForm').submit();
+                        },
+                        
+                    })
+                })
+                .catch(error=>{
+                    console.error('Error loading the edit form', error);
+                    alert('Edit form not loaded');
+                })
+            })
+        })
+    </script>
+
+    {{-- Add Reservation Modal Script --}}
+    <script>
+        $(document).ready(function(){
+            $('.reservation-add-btn').on('click', function(){                
+                let url = '/reservation/create';               
+                
+                fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'Application/json'
+                    }
+                })
+                .then(response => {
+                    if (!response.ok){
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data=>{      
+                    //console.log(data.reservations);              
+                    Swal.fire({
+                        title: "Add Reservation",
+                        html: data.html,
+                        showCancelButton: true,
+                        focusConfirm: false,
+                        preConfirm: () => {
+                            $('#addReservationForm').submit();
+                        },
+                        didOpen: ()=>{
+                            const modal = Swal.getPopup();
+                            modal.querySelector('#checkForCustomer').addEventListener('click', async function(){
+                                getFullCustomerName();
+                            });
+                        }
+                        
+                        
+                    });
+
+                    
+                })
+                .catch(error=>{
+                    console.error('Error loading the edit form', error);
+                    alert('Edit form not loaded');
+                })
+            })
+        })                               
+    </script>
+
+    
+
+    {{-- Script for add reservation --}}
+    <script>
+       
+        // Disable tables with overlapping reservation times
+        function checkAvailability() {            
+            const date = document.getElementById("date").value;
+            const stime = document.getElementById("stime").value;
+            const etime = document.getElementById("etime").value;
+
+            //if (!date || !stime || !etime) return;
+
+            let nonoTables = [];
+
+            const reservations = @json($reservations);
+
+            reservations.forEach(reservation => {            
+                const rDate = reservation.reserveDate;
+                const rStime = reservation.startTime;
+                const rEtime = reservation.endTime;
+
+                if (date === rDate) {
+                    if ((stime >= rStime && stime <= rEtime) || (etime <= rEtime && etime >= rStime)) {
+                        nonoTables.push(reservation.tableID);
+                    }
+                }
+            });
+
+            // Disable conflicting tables
+            const tableSelect = document.getElementById("tableSelect");
+            for (let opt of tableSelect.options) {
+                opt.disabled = nonoTables.includes(parseInt(opt.value));
+            }
+        }
+ 
+    </script>
+
+    {{-- Script for edit reservation --}}
+    <script>
+        //disables tables with overlapping reservation times
+        function checkAvailability_EditRes(){                            
+            const date = document.getElementById('date').value;
+            const stime = document.getElementById('stime').value;
+            const etime = document.getElementById('etime').value;
+
+            let nonoTables = [];
+
+            const reservations = JSON.parse(document.getElementById('reservationsData').textContent);
+            
+            const res = JSON.parse(document.getElementById('reservationData').textContent);
+
+         
+
+            reservations.forEach(reservation => {
+                if (reservation.resID == res.resID){
+                    //this part is here to make sure it doesnt count the current reservation to disable tablesx
+                    
+                    
+                } else {
+                    
+                    const r_date = reservation.reserveDate;
+                    const r_stime = reservation.startTime;
+                    const r_etime = reservation.endTime;
+
+                    if(date==r_date){
+                        
+                        if(stime>=r_stime && stime<=r_etime){
+                            nonoTables.push(reservation.tableID);
+                        } else if (etime<=r_etime && etime>=r_stime){
+                            nonoTables.push(reservation.tableID);
+                        }
+                    }
+                }                                
+            });                      
+
+            const tableSelect = document.getElementById('tableSelect');
+            for(let opt of tableSelect.options){
+                if(nonoTables.includes(parseInt(opt.value))){
+                    opt.disabled = true;
+                   
+                } else if (opt.value != '') {
+                    opt.disabled = false;
+                }
+            }
+        }
+    </script>    
+
+    {{-- Get full customer name --}}
+    <script>
+        async function getFullCustomerName(){
+            const enteredUsername = document.getElementById("customer").value;
+            if (!enteredUsername) return;
+
+            const url = new URL("{{route('api.customer.name')}}");
+            url.searchParams.append("username", enteredUsername);
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error("Network error");
+
+                const data = await response.json();
+                document.getElementById("fullname").value = data.fullName;
+            } catch (error) {
+                console.error("Fetch error:", error);
+                document.getElementById("fullname").value = "Invalid";
+            }
+            }
+    </script>
+
+    {{-- sure you want to delete? button function --}}
+    <script>
+        function confirmDelete(button) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to undo this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    button.nextElementSibling.submit(); // Submit the form
+                }
+            });
+        }
+    </script>
+
+    {{-- Bootstrap JS --}}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>        
+
+    {{-- SweetAlert2 --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
     
 </body>
 </html>
