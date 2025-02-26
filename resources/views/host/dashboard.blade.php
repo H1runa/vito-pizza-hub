@@ -46,6 +46,25 @@
     
 </head>
 <body>  
+    {{-- Success / Fail alerts --}}
+    <div class="continer">
+        {{-- success --}}
+        @if (@session('success'))
+            <div class="alert alert-success alert-dismissible fade show text-center fs-5" role="alert">
+                {{session('success')}}
+                <button class="btn-close" type="button" data-bs-dismiss="alert"></button>
+            </div>
+        @endif
+        {{-- failure --}}
+        @if (@session('error'))
+            <div class="alert alert-danger alert-dismissible fade show text-center fs-5" role="alert">
+                {{session('error')}}                
+                <button class="btn-close" type="button" data-bs-dismiss='alert'></button>
+            </div>
+            
+        @endif
+    </div>
+
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
           <a class="navbar-brand fs-3" href="#" style="font-family: 'Permanent Marker', sans-serif; color: #e63a0f;">Vito Wood Fired Pizza</a>
@@ -54,9 +73,9 @@
           </ul>
           
 
-          <ul class="dropdown pt-2">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Ren Renners
+          <ul class="dropdown">
+              <a class="nav-link dropdown-toggle mt-2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-person-circle fs-2"></i>
               </a>
               <ul class="dropdown-menu dropdown-menu-sm-end">
                 <li><a class="dropdown-item" href="{{route('logout')}}">Logout</a></li>                
@@ -221,7 +240,12 @@
                         showCancelButton: true,
                         focusConfirm: false,
                         preConfirm: () => {
-                            $('#editTableForm').submit();
+                            if($('#editTableForm')[0].checkValidity()){
+                                $('#editTableForm').submit();
+                            } else {
+                                Swal.showValidationMessage('Please fill out all the required fields');
+                                return false;
+                            };                            
                         }
                     })
                 })
@@ -258,8 +282,14 @@
                         showCancelButton: true,
                         focusConfirm: false,
                         preConfirm: () => {
-                            $('#addTableForm').submit();
+                            if ($('#addTableForm')[0].checkValidity()) {                                
+                                $('#addTableForm').submit();
+                            } else {
+                                Swal.showValidationMessage('Please fill out all required fields');
+                                return false;
+                            }
                         }
+
                     })
                 })
                 .catch(error=>{
@@ -298,7 +328,13 @@
                         showCancelButton: true,
                         focusConfirm: false,
                         preConfirm: ()=>{
-                            $('#editReservationForm').submit();
+                            if($('#editReservationForm')[0].checkValidity()){
+                                $('#editReservationForm').submit();
+                            } else {
+                                Swal.showValidationMessage('Please fill out all the fields');
+                                return false;
+                            }
+                            
                         },
                         
                     })
@@ -337,7 +373,13 @@
                         showCancelButton: true,
                         focusConfirm: false,
                         preConfirm: () => {
-                            $('#addReservationForm').submit();
+                            if($('#addReservationForm')[0].checkValidity()){
+                                $('#addReservationForm').submit();
+                            } else {
+                                Swal.showValidationMessage('Please fill out all the required fields');
+                                return false;
+                            }
+                            
                         },
                         didOpen: ()=>{
                             const modal = Swal.getPopup();

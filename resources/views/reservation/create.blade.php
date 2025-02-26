@@ -19,34 +19,34 @@
             <div class="mb-3">
                 <label for="customer" class="form-label">Username</label>
                 <div class="d-flex">
-                    <input type="text" name="customer" id="customer" class="form-control border-0 shadow-sm">
+                    <input required type="text" name="customer" id="customer" class="form-control border-0 shadow-sm">
                     <a href="#" id="checkForCustomer" class="btn btn-primary ms-2 shadow-sm"><i class="bi bi-search"></i></a>
                 </div>
             </div>
         
             <div class="mb-3">
                 <label for="fullname" class="form-label">Full Name</label>
-                <input type="text" name="fullname" id="fullname" class="form-control border-0 shadow-sm" readonly>
+                <input required type="text" name="fullname" id="fullname" class="form-control border-0 shadow-sm" readonly>
             </div>
         
             <div class="mb-3">
                 <label for="date" class="form-label">Date</label>
-                <input type="date" name="date" id="date" class="form-control border-0 shadow-sm" onchange="checkAvailability()">
+                <input required type="date" name="date" id="date" class="form-control border-0 shadow-sm" onchange="checkAvailability()">
             </div>
         
             <div class="mb-3">
                 <label for="stime" class="form-label">Start Time</label>
-                <input type="time" name="stime" id="stime" class="form-control border-0 shadow-sm" onchange="checkAvailability()">
+                <input required type="time" name="stime" id="stime" class="form-control border-0 shadow-sm" onchange="checkAvailability()">
             </div>
         
             <div class="mb-3">
                 <label for="etime" class="form-label">End Time</label>
-                <input type="time" name="etime" id="etime" class="form-control border-0 shadow-sm" onchange="checkAvailability()">
+                <input required type="time" name="etime" id="etime" class="form-control border-0 shadow-sm" onchange="checkAvailability()">
             </div>
         
             <div class="mb-3">
                 <label for="tableSelect" class="form-label">Table</label>
-                <select name="tableSelect" id="tableSelect" class="form-select border-0 shadow-sm">
+                <select required name="tableSelect" id="tableSelect" class="form-select border-0 shadow-sm">
                     <option value="" disabled selected>Show available tables</option>
                     @foreach ($tables as $t)
                         <option value="{{ $t->tableID }}">Seats: {{ $t->seatCount }}</option>

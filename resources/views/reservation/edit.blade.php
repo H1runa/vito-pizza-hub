@@ -59,27 +59,27 @@
     
         <div class="mb-3">
             <label for="customer" class="form-label">Customer Name</label>
-            <input type="text" readonly name="customer" id="customer" value="{{ $customer->firstName }} {{ $customer->lastName }}" class="form-control border-0 shadow-sm">
+            <input required type="text" readonly name="customer" id="customer" value="{{ $customer->firstName }} {{ $customer->lastName }}" class="form-control border-0 shadow-sm">
         </div>
     
         <div class="mb-3">
             <label for="date" class="form-label">Date</label>
-            <input type="date" name="date" id="date" value="{{ $reservation->reserveDate }}" class="form-control border-0 shadow-sm" onchange="checkAvailability_EditRes()">
+            <input required type="date" name="date" id="date" value="{{ $reservation->reserveDate }}" class="form-control border-0 shadow-sm" onchange="checkAvailability_EditRes()">
         </div>
     
         <div class="mb-3">
             <label for="stime" class="form-label">Start Time</label>
-            <input type="time" name="stime" id="stime" value="{{ $reservation->startTime }}" class="form-control border-0 shadow-sm" onchange="checkAvailability_EditRes()">
+            <input required type="time" name="stime" id="stime" value="{{ $reservation->startTime }}" class="form-control border-0 shadow-sm" onchange="checkAvailability_EditRes()">
         </div>
     
         <div class="mb-3">
             <label for="etime" class="form-label">End Time</label>
-            <input type="time" name="etime" id="etime" value="{{ $reservation->endTime }}" class="form-control border-0 shadow-sm" onchange="checkAvailability_EditRes()">
+            <input required type="time" name="etime" id="etime" value="{{ $reservation->endTime }}" class="form-control border-0 shadow-sm" onchange="checkAvailability_EditRes()">
         </div>
     
         <div class="mb-3">
             <label for="tableSelect" class="form-label">Table</label>
-            <select name="tableSelect" id="tableSelect" class="form-select border-0 shadow-sm">
+            <select required name="tableSelect" id="tableSelect" class="form-select border-0 shadow-sm">
                 @foreach ($tables as $t)
                     <option value="{{ $t->tableID }}" {{ $reservation->tableID == $t->tableID ? 'selected' : '' }}>
                         Table for {{ $t->seatCount }}

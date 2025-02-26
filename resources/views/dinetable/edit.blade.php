@@ -13,12 +13,12 @@
     
         <div class="mb-3">
             <label for="seats" class="form-label">Seat Count</label>
-            <input type="number" class="form-control border-0 shadow-sm" name="seats" id="seats" value="{{ $dineTable->seatCount }}">
+            <input required type="number" class="form-control border-0 shadow-sm" name="seats" id="seats" value="{{ $dineTable->seatCount }}">
         </div>
     
         <div class="mb-3">
             <label for="ava" class="form-label">Availability</label>
-            <select class="form-select border-0 shadow-sm" name="ava" id="ava">
+            <select required class="form-select border-0 shadow-sm" name="ava" id="ava">
                 <option value="True" {{ $dineTable->availability == 'True' ? 'selected' : '' }}>True</option>
                 <option value="False" {{ $dineTable->availability == 'False' ? 'selected' : '' }}>False</option>
             </select>

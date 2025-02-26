@@ -12,12 +12,12 @@
       @csrf
       <div class="mb-3">
           <label for="seats" class="form-label">Seat Count</label>
-          <input type="number" class="form-control border-0 shadow-sm" name="seats" id="seats">
+          <input required type="number" class="form-control border-0 shadow-sm" name="seats" id="seats">
       </div>
   
       <div class="mb-3">
           <label for="ava" class="form-label">Availability</label>
-          <select class="form-select border-0 shadow-sm" name="ava" id="ava">
+          <select required class="form-select border-0 shadow-sm" name="ava" id="ava">
               <option value="True">True</option>
               <option value="False">False</option>
           </select>

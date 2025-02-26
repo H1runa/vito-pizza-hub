@@ -49,14 +49,24 @@ class ReservationController extends Controller
 
         //add way to load the customer details to the view here.
 
-        Reservation::create([
-            'reserveDate'=>$request->date,
-            'startTime' => $request->stime,
-            'endTime' => $request->etime,
-            'staffID' => session('system_user_id'),
-            'tableID' => $request->tableSelect,
-            'cusID' => $customer->cusID
-        ]);
+        try{
+            Reservation::create([
+                'reserveDate'=>$request->date,
+                'startTime' => $request->stime,
+                'endTime' => $request->etime,
+                'staffID' => session('system_user_id'),
+                'tableID' => $request->tableSelect,
+                'cusID' => $customer->cusID
+            ]);
+    
+         }catch(\Illuminate\Validation\ValidationException $e){
+            return redirect()->route('host.dashboard')->with('error', 'Inputs could not be validated');
+         } catch(\Illuminate\Database\QueryException $e){
+            return redirect()->route('host.dashboard')->with('error', 'Database error');
+         } catch(\Exception $e){
+            return redirect()->route('host.dashboard')->with('error', 'Unexpected error occurred');
+         }
+
 
         return redirect()->route('host.dashboard')->with('success','Reservation added');
     }
@@ -103,15 +113,24 @@ class ReservationController extends Controller
 
         $reservation = Reservation::find($id);
 
-        $reservation->update([
-            'reserveDate'=>$request->date,
-            'startTime' => $request->stime,
-            'endTime' => $request->etime,
-            'staffID' => session('system_user_id'),
-            'tableID' => $request->tableSelect,            
-        ]);
+        try{
+            $reservation->update([
+                'reserveDate'=>$request->date,
+                'startTime' => $request->stime,
+                'endTime' => $request->etime,
+                'staffID' => session('system_user_id'),
+                'tableID' => $request->tableSelect,            
+            ]);
+        } catch (\Illuminate\Database\QueryException $e){
+            return redirect()->route('host.dashboard')->with('error', 'Database error');            
+        } catch (\Illuminate\Validation\ValidationException $e){
+            return redirect()->route('host.dashboard')->with('error', 'Input could not be validated');
+        }catch(\Exception $e){
+            return redirect()->route('host.dashboard')->with('error', 'Unexpected error occurred: '.$e->getMessage());
+        }
+        
 
-
+        //on success
         return redirect()->route('host.dashboard')->with('success','	Reservation updated');
 
     }
@@ -122,8 +141,14 @@ class ReservationController extends Controller
             return redirect()->route("auth.login");
         }
 
-        $reservation = Reservation::find($id);
-        $reservation->delete();
+        try{
+            $reservation = Reservation::find($id);
+            $reservation->delete();
+        } catch(\Exception $e){
+            return redirect()->route('host.dashboard')->with('error', 'Could not delete');
+        }
+        
+        // on success
         return redirect()->route('host.dashboard')->with('success','Reservation deleted');
     }
 }
