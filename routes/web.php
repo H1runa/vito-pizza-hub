@@ -3,6 +3,7 @@
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DineTableController;
 use App\Http\Controllers\host\HostController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReservationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -23,6 +24,9 @@ Route::post('/reservation/store', [ReservationController::class, 'store'])->name
 Route::get('/reservation/{id}/edit', [ReservationController::class, 'edit'])->name('reservation.edit');
 Route::put('/reservation/{id}', [ReservationController::class, 'update'])->name('reservation.update');
 Route::delete('/reservation/{id}', [ReservationController::class, 'delete'])->name('reservation.delete');
+//host-profile
+Route::get('/profile/{id}/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+Route::put('/profile/{id}/update', [ProfileController::class, 'update'])->name('profile.update');
 
 //api-routes
 Route::get('api/get-customer-name', [CustomerController::class, 'getFullName'])->name('api.customer.name');

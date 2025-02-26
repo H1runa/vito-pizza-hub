@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Illuminate\Http\Request;
 use App\Models\Reservation;
 use App\Models\DineTable;
@@ -144,6 +145,8 @@ class ReservationController extends Controller
         try{
             $reservation = Reservation::find($id);
             $reservation->delete();
+        } catch(\Illuminate\Database\QueryException $e){
+            return redirect()->route('host.dashboard')->with('error', 'Could not delete');
         } catch(\Exception $e){
             return redirect()->route('host.dashboard')->with('error', 'Could not delete');
         }

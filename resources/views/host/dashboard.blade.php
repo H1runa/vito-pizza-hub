@@ -75,9 +75,10 @@
 
           <ul class="dropdown">
               <a class="nav-link dropdown-toggle mt-2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="bi bi-person-circle fs-2"></i>
+                <i class="bi bi-person-circle fs-2 text-secondary"></i>
               </a>
-              <ul class="dropdown-menu dropdown-menu-sm-end">
+              <ul class="dropdown-menu dropdown-menu-sm-end">                   
+                <button class="dropdown-item edit-profile-btn" data-id="{{session('system_user_id')}}">Edit Profile</button>                        
                 <li><a class="dropdown-item" href="{{route('logout')}}">Logout</a></li>                
               </ul>
             </ul>            
@@ -252,6 +253,48 @@
                 .catch(error=>{
                     console.error('Error loading the edit form', error);
                     alert('Edit form not loaded');
+                })
+            })
+        })
+    </script>
+
+    {{-- Edit Profile Modal --}}
+    <script>
+        $(document).ready(function(){
+            $('.edit-profile-btn').on('click', function(){
+                let staffID = $(this).data('id');
+                let url = '/profile/'+staffID+'/edit';
+
+                fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'Application/json'
+                    }
+                })
+                .then(response=>{
+                    if(!response.ok){
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data=>{
+                    Swal.fire({
+                        title: 'Edit Profile',
+                        html: data.html,
+                        showCancelButton: true,
+                        focusConfirm: false,
+                        preConfirm: ()=>{                            
+                            if ($('#editProfileForm')[0].checkValidity()){
+                                $('#editProfileForm').submit();
+                            } else {
+                                Swal.showValidationMessage('Username must be filled out');
+                                return false;
+                            }
+                        },
+                        
+                    })
+                }).catch(error=>{
+                    console.error('Edit profile error: ',error);
                 })
             })
         })
@@ -516,7 +559,7 @@
         function confirmDelete(button) {
             Swal.fire({
                 title: "Are you sure?",
-                text: "You won't be able to undo this!",
+                text: "Please note that the reservations associated with this table will be deleted as well",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#d33",
