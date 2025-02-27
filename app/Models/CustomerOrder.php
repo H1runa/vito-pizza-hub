@@ -18,7 +18,8 @@ class CustomerOrder extends Model
     }
 
     public function menuItems(){
-        return $this->belongsToMany(MenuItem::class, 'customerorder_menuitem', 'orderID', 'menuID');
+        return $this->belongsToMany(MenuItem::class, 'customerorder_menuitem', 'orderID', 'menuID')
+                    ->withPivot('quantity');
     }
 
 }

@@ -31,4 +31,16 @@ class CustomerOrderController extends Controller
 
         return redirect()->route('headchef.dashboard')->with('success', 'Updated Successfully');
     }
+
+    public function viewMenuItems(Request $request, $id){
+        $order = CustomerOrder::with(['customer', 'menuItems'])->find($id);                    
+        $items = $order->menuItems;
+
+        return response()->json([
+            'html' => view('headchef.view-item-list', compact('order', 'items'))->render(),
+            'order' => $order,
+            'items' => $items
+        ]);
+        
+    }
 }

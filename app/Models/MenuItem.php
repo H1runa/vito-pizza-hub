@@ -11,5 +11,5 @@ class MenuItem extends Model
     public $incrementing = true;
     protected $keyType = 'int';
     public $timestamps = false;
-    protected $fillable = ['itemName', 'category', 'size', 'price', 'availability'];
+    protected $fillable = ['itemName', 'category', 'size', 'price', 'availability', 'image'];
 }

@@ -64,7 +64,11 @@
                                 @endif   
                                 <tr>
                                     <td>{{$o->customer->firstName.' '.$o->customer->lastName}}</td>
-                                    <td>{{$o->menuItems->count()}}</td>
+                                    <td>
+                                        <button class="btn btn-info viewItemsBtn" data-id="{{$o->orderID}}">
+                                            Items : {{$o->menuItems->count()}}
+                                        </button>                                  
+                                    </td>
                                     <td>{{$o->orderDate}}</td>
                                     <td>
                                         {{$o->orderStatus}}
@@ -99,7 +103,7 @@
                                 @endif   
                                 <tr>
                                     <td>{{$o->customer->firstName.' '.$o->customer->lastName}}</td>
-                                    <td>{{$o->menuItems->count()}}</td>
+                                    <td>View Items ({{$o->menuItems->count()}})</td>
                                     <td>{{$o->orderDate}}</td>
                                     <td>
                                         {{$o->orderStatus}}
@@ -134,7 +138,7 @@
                                 @endif   
                                 <tr>
                                     <td>{{$o->customer->firstName.' '.$o->customer->lastName}}</td>
-                                    <td>{{$o->menuItems->count()}}</td>
+                                    <td>View Items ({{$o->menuItems->count()}})</td>
                                     <td>{{$o->orderDate}}</td>
                                     <td>
                                         {{$o->orderStatus}}
@@ -180,6 +184,84 @@
                         },
                     })
                 })
+            })
+        })
+    </script>
+    <script>
+        function viewMenuItem(){
+            $(document).ready(function(){
+                $('.viewItemBtn').on('click', function(){                    
+                    let itemID = $(this).data('id');
+                    let orderID = $(this).data('orderid');
+                    let url = '/menuitem/'+itemID+'/view';
+
+                    fetch(url, {
+                        method: 'GET',
+                        headers: {
+                            'Accept': 'Application/json'
+                        }
+                    })
+                    .then(response=>{
+                        if(!response.ok){
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data=>{
+                        Swal.fire({
+                            title: data.item_name,
+                            html: data.html,
+                            showCancelButton: true,                        
+                            showConfirmButton: false,
+                            focusConfirm: false,
+                            preConfirm: ()=>{                            
+                                //
+                            },
+                        }).then(()=>{
+                            window.menuItemsModal(orderID);
+                        })
+                    })
+
+                })
+            })
+        }
+    </script>
+    <script>
+        $(document).ready(function(){
+            $('.viewItemsBtn').on('click', function(){
+                let orderID = $(this).data('id');
+                window.menuItemsModal = function(id){
+                    let url = '/order/'+id+'/view';
+                    fetch(url, {
+                        method: 'GET',
+                        headers: {
+                            'Accept': 'Application/json'
+                        }
+                    })
+                    .then(response=>{
+                        if(!response.ok){
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data=>{
+                        Swal.fire({
+                            title: 'Order Items',
+                            html: data.html,
+                            showCancelButton: true,                        
+                            showConfirmButton: false,
+                            focusConfirm: false,
+                            preConfirm: ()=>{                            
+                                //
+                            },
+                        })
+                        viewMenuItem(); //adding the script for viewing menu item
+                    })
+                }
+                window.menuItemsModal(orderID);
+
+                
+
             })
         })
     </script>

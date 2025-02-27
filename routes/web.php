@@ -5,8 +5,10 @@ use App\Http\Controllers\CustomerOrderController;
 use App\Http\Controllers\DineTableController;
 use App\Http\Controllers\headchef\HeadChefController;
 use App\Http\Controllers\host\HostController;
+use App\Http\Controllers\MenuItemController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReservationController;
+use App\Models\MenuItem;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 
@@ -31,9 +33,13 @@ Route::delete('/reservation/{id}', [ReservationController::class, 'delete'])->na
 Route::get('/profile/{id}/edit', [ProfileController::class, 'edit'])->name('profile.edit');
 Route::put('/profile/{id}/update', [ProfileController::class, 'update'])->name('profile.update');
 
-//headchef-order-status
+//headchef-order
 Route::get('/order/{id}/status/edit', [CustomerOrderController::class, 'edit'])->name('order.edit');
 Route::put('/order/{id}/status/update', [CustomerOrderController::class, 'update'])->name('order.update');
+Route::get('/order/{id}/view', [CustomerOrderController::class, 'viewMenuItems'])->name('order.view');
+
+//headchef-menuitem
+Route::get('/menuitem/{id}/view', [MenuItemController::class, 'view'])->name('menuitem.view');
 
 //api-routes
 Route::get('api/get-customer-name', [CustomerController::class, 'getFullName'])->name('api.customer.name');
