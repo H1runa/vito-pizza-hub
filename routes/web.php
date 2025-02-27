@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\CustomerOrderController;
 use App\Http\Controllers\DineTableController;
+use App\Http\Controllers\headchef\HeadChefController;
 use App\Http\Controllers\host\HostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReservationController;
@@ -11,6 +13,7 @@ use App\Http\Controllers\AuthController;
 Route::get('/', [AuthController::class, 'showLoginForm'])->name('auth.login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::get('/host/dashboard', [HostController::class,'dashboard'])->name('host.dashboard');
+Route::get('/headchef/dashboard', [HeadChefController::class, 'dashboard'])->name('headchef.dashboard');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 //host-table
 Route::get('/dinetable/create', [DineTableController::class, 'create'])->name('dinetable.create');
@@ -27,6 +30,10 @@ Route::delete('/reservation/{id}', [ReservationController::class, 'delete'])->na
 //host-profile
 Route::get('/profile/{id}/edit', [ProfileController::class, 'edit'])->name('profile.edit');
 Route::put('/profile/{id}/update', [ProfileController::class, 'update'])->name('profile.update');
+
+//headchef-order-status
+Route::get('/order/{id}/status/edit', [CustomerOrderController::class, 'edit'])->name('order.edit');
+Route::put('/order/{id}/status/update', [CustomerOrderController::class, 'update'])->name('order.update');
 
 //api-routes
 Route::get('api/get-customer-name', [CustomerController::class, 'getFullName'])->name('api.customer.name');
