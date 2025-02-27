@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Hash;
 class ProfileController extends Controller
 {
     public function edit(Request $request, $id){
+        //validating if the user is logged in
+        if(!session()->has('system_user_id')){
+            return redirect()->route('auth.login');
+        }
+
         try{
             $sysuser = SystemUser::find($id);
         } catch(\Exception $e) {
@@ -28,7 +33,10 @@ class ProfileController extends Controller
     }
 
     public function update(Request $request, $id, $role){
-
+        //validating if the user is logged in
+        if(!session()->has('system_user_id')){
+            return redirect()->route('auth.login');
+        }
         
         try{
             $user = SystemUser::find($id);

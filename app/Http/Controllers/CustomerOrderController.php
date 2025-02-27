@@ -33,6 +33,11 @@ class CustomerOrderController extends Controller
     }
 
     public function viewMenuItems(Request $request, $id){
+        //validating if the user is logged in
+        if(!session()->has('system_user_id')){
+            return redirect()->route('auth.login');
+        }
+        
         $order = CustomerOrder::with(['customer', 'menuItems'])->find($id);                    
         $items = $order->menuItems;
 
