@@ -7,10 +7,19 @@
     <title>View Item List</title>
 </head>
 <body>
-    @foreach ($items as $item)
-        <button data-id="{{$item->menuID}}" data-orderid='{{$order->orderID}}' class="btn btn-info viewItemBtn">
-            {{$item->itemName}} x {{$item->pivot->quantity}}
-        </button>
-    @endforeach
+    <div class="container my-4">
+        <div class="list-group">
+            @foreach ($items as $item)
+                <button 
+                    data-id="{{$item->menuID}}" 
+                    data-orderid='{{$order->orderID}}' 
+                    class="list-group-item list-group-item-action d-flex justify-content-between align-items-center viewItemBtn">
+                    <span>{{$item->itemName}}</span>
+                    <span class="badge bg-primary rounded-pill">{{$item->pivot->quantity}}</span>
+                </button>
+            @endforeach
+        </div>
+    </div>
 </body>
+
 </html>

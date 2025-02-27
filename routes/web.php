@@ -29,9 +29,9 @@ Route::post('/reservation/store', [ReservationController::class, 'store'])->name
 Route::get('/reservation/{id}/edit', [ReservationController::class, 'edit'])->name('reservation.edit');
 Route::put('/reservation/{id}', [ReservationController::class, 'update'])->name('reservation.update');
 Route::delete('/reservation/{id}', [ReservationController::class, 'delete'])->name('reservation.delete');
-//host-profile
+//profile
 Route::get('/profile/{id}/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-Route::put('/profile/{id}/update', [ProfileController::class, 'update'])->name('profile.update');
+Route::put('/profile/{id}/{role}/update', [ProfileController::class, 'update'])->name('profile.update');
 
 //headchef-order
 Route::get('/order/{id}/status/edit', [CustomerOrderController::class, 'edit'])->name('order.edit');

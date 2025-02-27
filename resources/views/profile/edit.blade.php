@@ -11,7 +11,7 @@
 
 </head>
 <body>
-    <form method="POST" id="editProfileForm" action="{{ route('profile.update', $sysuser->staffID) }}" class="p-4 border rounded-3 shadow-sm bg-light">
+    <form method="POST" id="editProfileForm" action="{{ route('profile.update', [$sysuser->staffID, session('job_title')]) }}" class="p-4 border rounded-3 shadow-sm bg-light">
         @csrf
         @method('PUT')
     

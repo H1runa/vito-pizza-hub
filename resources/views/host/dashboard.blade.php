@@ -47,7 +47,7 @@
 </head>
 <body>  
     {{-- Success / Fail alerts --}}
-    <div class="continer">
+    <div>
         {{-- success --}}
         @if (@session('success'))
             <div class="alert alert-success alert-dismissible fade show text-center fs-5" role="alert">

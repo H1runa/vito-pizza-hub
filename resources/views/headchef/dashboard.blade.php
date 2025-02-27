@@ -46,15 +46,13 @@
             <div class="tab-pane fade show active" id="dinein" role="tabpanel">
                 <div id="dinein-list" class="mt-3">                    
                     {{-- dinein orders --}}
-                    <table border="1" class="datatable table table-bordered">
-                        <thead>
-                            <tr>                                
+                    <table class="datatable table table-hover table-sm table-bordered">
+                        <thead class="table-secondary text-white">
+                            <tr>
                                 <th class="text-center">Customer Name</th>
                                 <th class="text-center">Items</th>
                                 <th class="text-center">Date</th>
                                 <th class="text-center">Status</th>
-                                
-                                
                             </tr>
                         </thead>
                         <tbody>
@@ -62,32 +60,32 @@
                                 @if ($o->orderStatus == 'Finished' || $o->orderType != 'dinein')
                                     @continue
                                 @endif   
-                                <tr>
-                                    <td>{{$o->customer->firstName.' '.$o->customer->lastName}}</td>
-                                    <td>
+                                <tr class="text-center align-middle">
+                                    <td class="align-middle">{{$o->customer->firstName.' '.$o->customer->lastName}}</td>
+                                    <td class="align-middle">
                                         <button class="btn btn-info viewItemsBtn" data-id="{{$o->orderID}}">
                                             Items : {{$o->menuItems->count()}}
                                         </button>                                  
                                     </td>
-                                    <td>{{$o->orderDate}}</td>
-                                    <td>
-                                        {{$o->orderStatus}}
-                                        <button data-id="{{$o->orderID}}" class="bg-transparent border-0 m-0 orderStatusEditBtn">
-                                            <i class="bi bi-pencil text-primary"></i>
+                                    <td class="text-center align-middle">{{$o->orderDate}}</td>                                    
+                                    <td class="align-middle">                                        
+                                        <button data-id="{{$o->orderID}}" class="btn border-1 m-0 orderStatusEditBtn {{$o->orderStatus=='Preparing' ? 'btn-info' : 'btn-warning'}}">
+                                            {{$o->orderStatus}}    
                                         </button>                                                                                
                                     </td>
-                                                              
                                 </tr>                      
                             @endforeach
                         </tbody>
                     </table>
+                    
+                    
                 </div>
             </div>
             <div class="tab-pane fade " id="pickup" role="tabpanel">
                 <div id="pickup-list" class="mt-3">
                     {{-- pickup orders --}}
-                    <table border="1" class="table table-bordered datatable">
-                        <thead>
+                    <table border="1" class="datatable table table-hover table-sm table-bordered">
+                        <thead class="table-secondary text-white">
                             <tr>
                                 <th class="text-center">Customer Name</th>
                                 <th class="text-center">Items</th>
@@ -101,14 +99,17 @@
                                 @if ($o->orderStatus == 'Finished' || $o->orderType != 'pickup')
                                     @continue
                                 @endif   
-                                <tr>
+                                <tr class="text-center align-middle">
                                     <td>{{$o->customer->firstName.' '.$o->customer->lastName}}</td>
-                                    <td>View Items ({{$o->menuItems->count()}})</td>
-                                    <td>{{$o->orderDate}}</td>
                                     <td>
-                                        {{$o->orderStatus}}
-                                        <button data-id="{{$o->orderID}}" class="bg-transparent border-0 m-0 orderStatusEditBtn">
-                                            <i class="bi bi-pencil text-primary"></i>
+                                        <button class="btn btn-info viewItemsBtn" data-id="{{$o->orderID}}">
+                                            Items : {{$o->menuItems->count()}}
+                                        </button> 
+                                    </td>
+                                    <td class="text-center">{{$o->orderDate}}</td>
+                                    <td class="align-middle">                                        
+                                        <button data-id="{{$o->orderID}}" class="btn border-1 m-0 orderStatusEditBtn {{$o->orderStatus=='Preparing' ? 'btn-info' : 'btn-warning'}}">
+                                            {{$o->orderStatus}}    
                                         </button>                                                                                
                                     </td>
                                                                
@@ -121,8 +122,8 @@
             <div class="tab-pane fade " id="delivery" role="tabpanel">
                 <div id="delivery-list" class="mt-3">
                     {{-- delivery orders --}}
-                    <table border="1" class="table table-bordered datatable">
-                        <thead>
+                    <table border="1" class="datatable table table-hover table-sm table-bordered">
+                        <thead class="table-secondary text-white">
                             <tr>
                                 <th class="text-center">Customer Name</th>
                                 <th class="text-center">Items</th>
@@ -136,14 +137,17 @@
                                 @if ($o->orderStatus == 'Finished' || $o->orderType != 'delivery')
                                     @continue
                                 @endif   
-                                <tr>
+                                <tr class="text-center align-middle">
                                     <td>{{$o->customer->firstName.' '.$o->customer->lastName}}</td>
-                                    <td>View Items ({{$o->menuItems->count()}})</td>
-                                    <td>{{$o->orderDate}}</td>
                                     <td>
-                                        {{$o->orderStatus}}
-                                        <button data-id="{{$o->orderID}}" class="bg-transparent border-0 m-0 orderStatusEditBtn">
-                                            <i class="bi bi-pencil text-primary"></i>
+                                        <button class="btn btn-info viewItemsBtn" data-id="{{$o->orderID}}">
+                                            Items : {{$o->menuItems->count()}}
+                                        </button> 
+                                    </td>
+                                    <td class="text-center">{{$o->orderDate}}</td>
+                                    <td class="align-middle">                                        
+                                        <button data-id="{{$o->orderID}}" class="btn border-1 m-0 orderStatusEditBtn {{$o->orderStatus=='Preparing' ? 'btn-info' : 'btn-warning'}}">
+                                            {{$o->orderStatus}}    
                                         </button>                                                                                
                                     </td>
                                                               
@@ -156,6 +160,48 @@
     </div>
 @endsection
 @push('scripts')
+    {{-- Edit Profile Modal --}}
+    <script>
+        $(document).ready(function(){
+            $('.edit-profile-btn').on('click', function(){
+                let staffID = $(this).data('id');                
+                let url = '/profile/'+staffID+'/edit';
+
+                fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'Application/json'
+                    }
+                })
+                .then(response=>{
+                    if(!response.ok){
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data=>{
+                    Swal.fire({
+                        title: 'Edit Profile',
+                        html: data.html,
+                        showCancelButton: true,
+                        focusConfirm: false,
+                        preConfirm: ()=>{                            
+                            if ($('#editProfileForm')[0].checkValidity()){
+                                $('#editProfileForm').submit();
+                            } else {
+                                Swal.showValidationMessage('Username must be filled out');
+                                return false;
+                            }
+                        },
+                        
+                    })
+                }).catch(error=>{
+                    console.error('Edit profile error: ',error);
+                })
+            })
+        })
+    </script>
+    {{-- Edit Button Script --}}
     <script>
         $(document).ready(function(){
             $('.orderStatusEditBtn').on('click', function(){
@@ -187,6 +233,7 @@
             })
         })
     </script>
+    {{-- View Item Script --}}
     <script>
         function viewMenuItem(){
             $(document).ready(function(){
@@ -226,6 +273,7 @@
             })
         }
     </script>
+    {{-- View Item List Script --}}
     <script>
         $(document).ready(function(){
             $('.viewItemsBtn').on('click', function(){
@@ -265,4 +313,5 @@
             })
         })
     </script>
+    
 @endpush

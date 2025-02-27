@@ -27,7 +27,7 @@ class ProfileController extends Controller
 
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id, $role){
 
         
         try{
@@ -39,7 +39,7 @@ class ProfileController extends Controller
                         'password' => Hash::make($request->newpassword)
                     ]);
                 } else {
-                    return redirect()->route('host.dashboard')->with('error', 'Invalid Password');
+                    return redirect()->route($role.'.dashboard')->with('error', 'Invalid Password');
                 }
             } else {
                 $user->update([
@@ -47,10 +47,12 @@ class ProfileController extends Controller
                 ]);
             }
         } catch(\Exception $e){
-            return redirect()->route('host.dashboard')->with('error', 'Profile could not be updated: '.$e->getMessage());
+            return redirect()->route($role.'.dashboard')->with('error', 'Profile could not be updated: '.$e->getMessage());
         }
 
         //on success
-        return redirect()->route('host.dashboard')->with('success', 'Successfully updated profile');
+        return redirect()->route($role.'.dashboard')->with('success', 'Successfully updated profile');
     }
+
+   
 }

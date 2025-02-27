@@ -14,12 +14,52 @@
 
     {{-- Custom Fonts --}}
     <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+
+    {{-- Background image --}}
+    <style>
+        body {
+            position: relative;
+            background: url('{{ asset('images/background.png') }}') no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;
+            margin: 0;
+        }
+    
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.6); /* Semi-transparent black overlay */
+            z-index: -1; /* Ensure overlay is behind the content */
+        }
+    </style>
             
 
 </head>
-<body>    
+<body>        
 
     <div class="container-fluid m-0">
+        {{-- Success / Fail alerts --}}
+        <div>
+            {{-- success --}}
+            @if (@session('success'))
+                <div class="alert alert-success alert-dismissible fade show text-center fs-5" role="alert">
+                    {{session('success')}}
+                    <button class="btn-close" type="button" data-bs-dismiss="alert"></button>
+                </div>
+            @endif
+            {{-- failure --}}
+            @if (@session('error'))
+                <div class="alert alert-danger alert-dismissible fade show text-center fs-5" role="alert">
+                    {{session('error')}}                
+                    <button class="btn-close" type="button" data-bs-dismiss='alert'></button>
+                </div>
+                
+            @endif
+        </div>
         @yield('content')
     </div>
 
@@ -32,6 +72,19 @@
 
     {{-- JQuery --}}
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    
+    {{-- DataTables --}}
+    <script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.min.js"></script>    
+         
+    {{-- Initializing the DataTables --}}
+    <script>
+        $(document).ready(function() {            
+            $('.datatable').DataTable({
+                responsive:true
+            });
+        });
+    </script>
 
     {{-- Scripts from child file --}}
     @stack('scripts') 
