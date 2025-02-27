@@ -103,8 +103,8 @@
             <div class="tab-pane fade" id="tables" role="tabpanel">
                 <div id="table-list" class="mt-3">                    
                     {{-- Tables List --}}
-                    <table border="1" class="datatable table table-bordered">
-                        <thead>
+                    <table border="1" class="datatable table table-hover table-sm table-bordered">
+                        <thead class="table-secondary text-white">
                             <tr>                                
                                 <th class="text-center">Seat Count</th>
                                 <th class="text-center">Availability</th>
@@ -142,8 +142,8 @@
             <div class="tab-pane fade show active" id="reservations" role="tabpanel">
                 <div id="reservation-list" class="mt-3">
                     {{-- <h3>Reservation List</h3> --}}
-                    <table border="1" class="table table-bordered datatable">
-                        <thead>
+                    <table border="1" class="datatable table table-hover table-sm table-bordered">
+                        <thead class="table-secondary text-white">
                             <tr>
                                 <th class='text-center'>Customer</th>
                                 <th class='text-center'>Date</th>
