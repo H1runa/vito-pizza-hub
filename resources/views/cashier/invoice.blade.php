@@ -17,21 +17,22 @@
             <table class="table table-bordered">
                 <thead class="table-light">
                     <tr>
-                        <th>Item</th>
-                        <th>Quantity</th>
-                        <th>Topping</th>
-                        <th>Price (Rs.)</th>
+                        <th class="text-center">Item</th>
+                        <th class="text-center">Quantity</th>
+                        <th class="text-center">Topping</th>
+                        <th class="text-center">Price (Rs.)</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        @foreach ($order as $o)
-                            <td>{{$o->itemName}}</td>
-                            <td>{{$o->quantity}}</td>
-                            <td>{{$o->toppingName}}</td>
-                            <td>Rs.{{$o->itemPrice}}</td>
-                        @endforeach
-                    </tr>
+                <tbody>                    
+                    @foreach ($order as $o)
+                        <tr>
+                            <td class="text-center">{{$o->itemName}}</td>
+                            <td class="text-center">{{$o->quantity}}</td>
+                            <td class="text-center">{{$o->toppingName}}</td>
+                            <td class="text-center">Rs.{{$o->itemPrice}}</td>
+                        </tr>
+                    @endforeach
+                    
                 </tbody>
             </table>
         </div>

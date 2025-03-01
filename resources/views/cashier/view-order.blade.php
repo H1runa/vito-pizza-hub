@@ -159,14 +159,40 @@
     <script>
         function calcTotal(){
             let total = 0.00;
+            let ogTotal = 0.00;
+            let offer = JSON.parse(localStorage.getItem('offers'));
+            let discount = 0;                        
+
+            if (offer != null){
+                if(!(Object.keys(offer).length === 0)){                
+                    discount = parseFloat(offer[0].rate);     
+                            
+                }
+            }
+            
+
             $('.order-item').each(function(){
                 let price = parseFloat($(this).find('.price').val());                
                 let quantity = parseFloat($(this).find('.quantity').val());                                               
                 let selectedTopping = $(this).find('.toppingSelect').find('option:selected');
                 let topPrice = parseFloat(selectedTopping.data('price'));
-
-                total += (price+topPrice)*quantity;
+                let itemTotal = 0;
+                
+                itemTotal = (price+topPrice)*quantity;
+                // total += itemTotal;
+                let save = 0;
+                save = ((itemTotal/100)*discount);   
+                // window.discounted = save; 
+                // alert(save);            
+                total += itemTotal - save; 
+                ogTotal += itemTotal;
+                $('#discountAmount').text(save.toFixed(2));
+                // alert(total);
             })
+
+            // alert(total-ogTotal);
+            window.discounted = ogTotal-total;
+            $('#discountAmount').text((ogTotal-total).toFixed(2));
             
             $('#totalPrice').text(total.toFixed(2));
         }
@@ -204,6 +230,7 @@
                 $('#totalPrice').text(total.toFixed(2));
                 $('#discountAmount').text(saved.toFixed(2));
             }
+            calcTotal();
             
         })
     </script>
@@ -264,6 +291,7 @@
                 
                 $('#orderInput').val(order);
                 $('#offersInput').val(offers);
+                // alert(window.discounted);
                 $('#discounted').val(window.discounted);
                 // alert(window.discounted);
 
@@ -278,13 +306,13 @@
                                 <!-- Tax Field -->
                                 <div class="mb-3">
                                     <label for="tax" class="form-label">Tax (%)</label>
-                                    <input type="number" id="tax" class="form-control" placeholder="Enter tax percentage" min="0" required>
+                                    <input value = '0'  type="number" id="tax" class="form-control" placeholder="Enter tax percentage" min="0" required>
                                 </div>
 
                                 <!-- Service Charge Field -->
                                 <div class="mb-3">
                                     <label for="serviceCharge" class="form-label">Service Charge (Rs.)</label>
-                                    <input type="number" id="serviceCharge" class="form-control" placeholder="Enter service charge" min="0" required>
+                                    <input  value='0' type="number" id="serviceCharge" class="form-control" placeholder="Enter service charge" min="0" required>
                                 </div>
 
                                 
@@ -298,12 +326,12 @@
                         let modal = Swal.getPopup();
                         let tax = parseFloat(modal.querySelector('#tax').value);
                         let servCharge = parseFloat(modal.querySelector('#serviceCharge').value);
-
-                        if(!tax || tax< 0 || tax>100){
+                        
+                        if(tax< 0 || tax>100){
                             Swal.showValidationMessage('Enter a valid tax percentage');
                             return false;
                         }
-                        if (!servCharge || servCharge<0){
+                        if (servCharge<0){
                             Swal.showValidationMessage('Enter a valid service charge amount');
                             return false;
                         }

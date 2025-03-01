@@ -11,7 +11,7 @@ class CustomerInvoice extends Model
     public $incrementing = true;
     protected $keyType = 'int';
     public $timestamps = false;
-    protected $fillable = ['tax', 'discountAmount', 'serviceCharge', 'amount', 'totalBill', 'cusID', 'offerID', 'orderID'];
+    protected $fillable = ['tax', 'discountAmount', 'serviceCharge', 'amount', 'totalBill', 'cusID', 'OfferID', 'orderID'];
 
     public function customerOrder(){
         return $this->belongsTo(CustomerOrder::class, 'orderID');
