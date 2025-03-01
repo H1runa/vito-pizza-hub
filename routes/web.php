@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\cashier\CashierController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CustomerOrderController;
 use App\Http\Controllers\DineTableController;
@@ -16,6 +17,7 @@ Route::get('/', [AuthController::class, 'showLoginForm'])->name('auth.login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::get('/host/dashboard', [HostController::class,'dashboard'])->name('host.dashboard');
 Route::get('/headchef/dashboard', [HeadChefController::class, 'dashboard'])->name('headchef.dashboard');
+Route::get('/cashier/dashboard', [CashierController::class, 'dashboard'])->name('cashier.dashboard');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 //host-table
 Route::get('/dinetable/create', [DineTableController::class, 'create'])->name('dinetable.create');
@@ -40,6 +42,14 @@ Route::get('/order/{id}/view', [CustomerOrderController::class, 'viewMenuItems']
 
 //headchef-menuitem
 Route::get('/menuitem/{id}/view', [MenuItemController::class, 'view'])->name('menuitem.view');
+
+//cashier
+Route::get('/cashier/{id}/additem', [CashierController::class, 'selectQuantity'])->name('cashier.additem');
+Route::get('/cashier/order/view', [CashierController::class, 'order'])->name('cashier.order');
+Route::get('/cashier/offers/view', [CashierController::class, 'offers'])->name('cashier.offers');
+Route::post('/cashier/checkout', [CashierController::class, 'checkout'])->name('cashier.checkout');
+Route::post('/cashier/invoice', [CashierController::class, 'invoice'])->name('cashier.invoice');
+Route::get('/cashier/order/history', [CashierController::class, 'history'])->name('cashier.order.history');
 
 //api-routes
 Route::get('api/get-customer-name', [CustomerController::class, 'getFullName'])->name('api.customer.name');

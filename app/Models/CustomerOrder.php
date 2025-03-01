@@ -11,7 +11,7 @@ class CustomerOrder extends Model
     public $incrementing = true;
     protected $keyType = 'int';
     public $timestamps = false;
-    protected $fillable = ['orderType', 'orderDate', 'orderStatus', 'cusID', 'OfferID'];
+    protected $fillable = ['orderType', 'orderDate', 'orderTime' ,'orderStatus', 'cusID', 'OfferID'];
 
     public function customer(){
         return $this->belongsTo(Customer::class, 'cusID', 'cusID');
@@ -20,6 +20,10 @@ class CustomerOrder extends Model
     public function menuItems(){
         return $this->belongsToMany(MenuItem::class, 'customerorder_menuitem', 'orderID', 'menuID')
                     ->withPivot('quantity');
+    }
+
+    public function customerInvoice(){
+        return $this->hasOne(CustomerInvoice::class, 'orderID');
     }
 
 }
