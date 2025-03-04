@@ -12,6 +12,6 @@ class SystemUser extends Model
 
     protected $keyType = "int";
     public $timestamps = false;
-    protected $fillable = ['username', 'password'] ;
+    protected $fillable = ['staffID','username', 'password'] ;
 
 }

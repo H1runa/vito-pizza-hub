@@ -14,6 +14,7 @@ use App\Models\Feedback;
 use App\Models\MenuItem;
 use App\Models\CustomerOrder;
 use App\Models\Staff;
+use App\Models\SystemUser;
 use Illuminate\Http\Request;
 
 class ManagerController extends Controller
@@ -177,5 +178,39 @@ class ManagerController extends Controller
             return redirect()->back()->with('error', 'Could not retrieve feedback data');
         }
     }
+
+    public function staff(){
+        try{
+            $staff = Staff::all();
+
+            return view('manager.view-staff', compact('staff'));
+        } catch(\Exception $e){
+            return redirect()->back()->with('Error', 'Staff Members could not be retrieved');
+        }
+        
+    }
     
+    public function sysusers(){
+        try{
+            $sysusers = [];
+            $users = SystemUser::all();
+            foreach($users as $u){
+                $staff = Staff::find($u->staffID);
+
+                $tmp = [
+                    'staff' => $staff,
+                    'user' => $u
+                ];
+
+                array_push($sysusers, $tmp);
+            }
+
+            $noLogin = Staff::whereNotIn('staffID', SystemUser::pluck('staffID'))->get();            
+
+            // dd($sysusers);
+            return view('manager.view-systemuser', compact('sysusers', 'noLogin'));
+        } catch(\Exception $e){
+            return redirect()->back()->with('error', 'Could not retieve system users list');
+        }
+    }
 }

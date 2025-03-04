@@ -86,8 +86,8 @@
                                 Staff
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">System Users</a></li>
-                                <li><a class="dropdown-item" href="#">Staff</a></li>
+                                <li><a class="dropdown-item" href="{{route('manager.sysusers')}}">System Users</a></li>
+                                <li><a class="dropdown-item" href="{{route('manager.staff')}}">Staff</a></li>
                                 <li><a class="dropdown-item" href="#">Staff Leaves</a></li>
                                 <li><a class="dropdown-item" href="#">Staff Attendance</a></li>
                                 <li><a class="dropdown-item" href="#">Service Charge Allowance</a></li>

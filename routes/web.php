@@ -12,6 +12,8 @@ use App\Http\Controllers\MenuItemController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReservationController;
 
+use App\Http\Controllers\StaffController;
+use App\Http\Controllers\SystemUserController;
 use App\Http\Controllers\ToppingController;
 use App\Models\MenuItem;
 use Illuminate\Support\Facades\Route;
@@ -69,6 +71,8 @@ Route::delete('/manager/returns/{id}/delete', [ManagerController::class, 'delete
 Route::get('/manager/order/history', [ManagerController::class, 'order_history'])->name('manager.order.history');
 Route::get('/manager/order/history/{id}/view', [ManagerController::class, 'view_order_history'])->name('manager.order.history.view');
 Route::get('/manager/view/feedback', [ManagerController::class, 'feedback'])->name('manager.feedback');
+Route::get('/manager/staff/view', [ManagerController::class, 'staff'])->name('manager.staff');
+Route::get('/manager/sysusers', [ManagerController::class, 'sysusers'])->name('manager.sysusers');
 
 //toppings
 Route::post('/topping/create', [ToppingController::class, 'create'])->name('topping.create');
@@ -80,12 +84,24 @@ Route::post('offer/create', [CustomerOfferController::class, 'create'])->name('o
 Route::put('/offer/{id}/update', [CustomerOfferController::class, 'update'])->name('offer.update');
 Route::delete('/offer/{id}/delete', [CustomerOfferController::class, 'delete'])->name('offer.delete');
 
+//staff
+Route::post('/staff/create', [StaffController::class, 'store'])->name('staff.create');
+Route::put('/staff/{id}/update', [StaffController::class, 'update'])->name('staff.update');
+Route::delete('/staff/{id}/delete', [StaffController::class, 'delete'])->name('staff.delete');
+
+//system user
+Route::post('systemuser/create', [SystemUserController::class, 'store'])->name('systemuser.create');
+Route::put('systemuser/{id}/update', [SystemUserController::class, 'update'])->name('systemuser.update');
+Route::delete('systemuser/{id}/delete', [SystemUserController::class, 'delete'])->name('systemuser.delete');
+
 
 //api-routes
 Route::get('api/get-customer-name', [CustomerController::class, 'getFullName'])->name('api.customer.name');
 Route::get('/api/menuitem/{id}/get', [MenuItemController::class, 'get'])->name('api.menuitem.get');
 Route::get('/api/topping/{id}/get', [ToppingController::class, 'get'])->name('api.topping.get');
 Route::get('/api/offer/{id}/get', [CustomerOfferController::class, 'get'])->name('api.offer.get');
+Route::get('/api/staff/{id}/get', [StaffController::class, 'get'])->name('api.staff.get');
+Route::get('api/systemuser/{id}/get', [SystemUserController::class, 'get'])->name('api.systemuser.get');
 
 Route::post('/welcome', function(){
     return view('welcome');
