@@ -16,7 +16,7 @@
                     <div class="row">
                         @foreach ($items as $item)
                             {{-- Skipping the ones that dont belong to the relavent category --}}
-                            @if ($item->category == $category->category)
+                            @if ($item->category != $category->category)
                                 @continue
                             @endif
                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">

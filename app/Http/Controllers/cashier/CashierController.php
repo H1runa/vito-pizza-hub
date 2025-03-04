@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\cashier;
 
 use App\Models\CustomerOrder;
+use App\Models\CustomerOrder_ExtraTopping;
+use App\Models\CustomerOrder_MenuItem;
 use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use App\Models\CustomerInvoice;
@@ -125,8 +127,10 @@ class CashierController extends Controller
             $t = ExtraTopping::find($item->top);            
 
             $add = new \stdClass();
+            $add->itemID = $i->menuID;
             $add->itemName = $i->itemName;
             $add->itemPrice = $i->price;
+            $add->toppingID = $t->toppingID;
             $add->toppingName = $t->toppingName;
             $add->toppingPrice = $t->price;
             $add->quantity = $item->quantity;
@@ -154,13 +158,10 @@ class CashierController extends Controller
         // dd($discounted);
 
         $order = json_decode($order);
-        $offers = json_decode($offers);                      
+        $offers = json_decode($offers);         
+                
 
-        $originalTotal = 0;
-
-        foreach ($order as $o){
-            $originalTotal += (($o->itemPrice+$o->toppingPrice)*$o->quantity);            
-        }        
+        $originalTotal = 0;        
 
         //totalBill
         $total = $originalTotal+($tax*($originalTotal/100))-$discounted+$servCharge;
@@ -176,7 +177,27 @@ class CashierController extends Controller
             'orderTime' => $currentTime,
             'orderStatus' => 'Placed',
             'OfferID' => $offers == null ? null : $offers[0]->id
-        ]);        
+        ]);    
+        
+        //adding items to database
+        foreach ($order as $o){
+            $originalTotal += (($o->itemPrice+$o->toppingPrice)*$o->quantity);    
+            
+            //customerorder_menuitem
+            $cusmenu = CustomerOrder_MenuItem::create([
+                'orderID' => $neworder->orderID,
+                'menuID' => $o->itemID,
+                'quantity' => $o->quantity
+            ]);            
+
+            //custoemrorder_extratopping
+
+            $custop = CustomerOrder_ExtraTopping::create([
+                'orderID' => $neworder->orderID,
+                'toppingID' => $o->toppingID,
+                'menuID' => $o->itemID
+            ]);
+        }        
 
 
         //making the invoice

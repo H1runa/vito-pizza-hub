@@ -26,8 +26,8 @@
                     </div>
                     <!-- Size -->
                     <div class="col-6 d-flex justify-content-between">
-                        <strong>Size:</strong>
-                        <span>{{$item->size}}</span>
+                        <strong>Topping:</strong>
+                        <span>{{$topping}}</span>
                     </div>
                     <!-- Availability -->
                     <div class="col-6 d-flex justify-content-between">
