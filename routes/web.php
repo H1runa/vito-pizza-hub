@@ -66,6 +66,9 @@ Route::get('/manager/offers', [ManagerController::class, 'offers'])->name('manag
 Route::get('/manager/returns', [ManagerController::class, 'returns'])->name('manager.returns');
 Route::post('/manager/returns/create', [ManagerController::class, 'add_return'])->name('manager.addreturn');
 Route::delete('/manager/returns/{id}/delete', [ManagerController::class, 'delete_return'])->name('manager.deletereturn');
+Route::get('/manager/order/history', [ManagerController::class, 'order_history'])->name('manager.order.history');
+Route::get('/manager/order/history/{id}/view', [ManagerController::class, 'view_order_history'])->name('manager.order.history.view');
+Route::get('/manager/view/feedback', [ManagerController::class, 'feedback'])->name('manager.feedback');
 
 //toppings
 Route::post('/topping/create', [ToppingController::class, 'create'])->name('topping.create');

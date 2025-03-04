@@ -6,11 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Models\CusOrderReturn;
 use App\Models\CusOrderReturn_CustomerOrder;
 use App\Models\CusOrderReturn_MenuItem;
+use App\Models\Customer;
 use App\Models\CustomerOffer;
 use App\Models\CustomerOrder_MenuItem;
 use App\Models\ExtraTopping;
+use App\Models\Feedback;
 use App\Models\MenuItem;
 use App\Models\CustomerOrder;
+use App\Models\Staff;
 use Illuminate\Http\Request;
 
 class ManagerController extends Controller
@@ -132,6 +135,46 @@ class ManagerController extends Controller
             return redirect()->back()->with('success', 'Return deleted successfully');
         } catch (\Exception $e){
             return redirect()->back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function order_history(){
+        $customers = Customer::all();
+
+        return view('manager.order-history', compact('customers'));
+    }
+
+    public function view_order_history($id){
+        try{
+            $orders = CustomerOrder::where('cusID', $id)->get();        
+            
+            return view('manager.customer-history', compact('orders'));
+        } catch(\Exception $e){
+            return redirect()->back()->with('error', 'Customer order history could not be retrieved');
+        }        
+        
+    }
+
+    public function feedback(){
+        try{
+            $feed = [];
+            $feedbacks = Feedback::all();
+            foreach ($feedbacks as $f){
+                $cus = Customer::find($f->cusID);
+                $staff = Staff::find($f->staffID);
+
+                $temp = [
+                    'feedback' => $f,
+                    'customer' => $cus,
+                    'staff' => $staff
+                ];
+
+                array_push($feed, $temp);
+            }
+            // dd($feed);
+            return view('manager.view-feedback', compact('feed'));
+        } catch(\Exception $e){
+            return redirect()->back()->with('error', 'Could not retrieve feedback data');
         }
     }
     
