@@ -13,8 +13,15 @@ use App\Models\ExtraTopping;
 use App\Models\Feedback;
 use App\Models\MenuItem;
 use App\Models\CustomerOrder;
+use App\Models\ServiceChargeAllowance;
 use App\Models\Staff;
+use App\Models\StaffAttendance;
+use App\Models\StaffLeave;
+use App\Models\StaffOvertimeAllowance;
 use App\Models\SystemUser;
+use App\Models\Salary;
+use App\Models\EPF;
+use App\Models\ETF;
 use Illuminate\Http\Request;
 
 class ManagerController extends Controller
@@ -212,5 +219,126 @@ class ManagerController extends Controller
         } catch(\Exception $e){
             return redirect()->back()->with('error', 'Could not retieve system users list');
         }
+    }
+
+    public function salary(){
+        $salary = Salary::all();
+        $salaries = [];
+
+        foreach($salary as $s){
+            $staff = Staff::find($s->staffID);
+
+            $tmp = [
+                'staff' => $staff,
+                'salary' => $s
+            ];
+
+            array_push($salaries, $tmp);
+        }
+        
+        return view('manager.salary', compact('salaries'));
+    }
+
+    public function EPF(){
+        try{
+            $epf = EPF::all();
+
+            $data = [];
+
+            foreach($epf as $e){
+                $staff = Staff::find($e->staffID);
+
+                $tmp = [
+                    'staff' => $staff,
+                    'epf' => $e
+                ];
+
+                array_push($data, $tmp);
+            }
+
+            return view('manager.epf', compact('data'));
+        } catch(\Exception $e){
+            return redirect()->back()->with('error', 'EPF data not loaded.');
+        }
+    }
+
+    public function ETF(){
+        try{
+            $etf = ETF::all();
+
+            $data = [];
+
+            foreach($etf as $e){
+                $staff = Staff::find($e->staffID);
+
+                $tmp = [
+                    'staff' => $staff,
+                    'etf' => $e
+                ];
+
+                array_push($data, $tmp);
+            }
+
+            return view('manager.etf', compact('data'));
+        } catch(\Exception $e){
+            return redirect()->back()->with('error', 'ETF data not loaded.');
+        }
+    }
+
+    public function leaves(){
+        $leaves = StaffLeave::all();
+        $data = [];
+
+        foreach($leaves as $leave){
+            $staff = Staff::find($leave->staffID);
+
+            $temp = [
+                'staff' => $staff,
+                'leave' => $leave 
+            ];
+
+            array_push($data, $temp);
+        }
+
+        return view('manager.leaves', compact('data'));
+    }
+
+    public function attendance(){
+        $att = StaffAttendance::all();
+        $data = [];
+        foreach ($att as $a){
+            $staff = Staff::find($a->staffID);
+
+            $temp = [
+                'staff' => $staff,
+                'attendance' => $a
+            ];
+
+            array_push($data, $temp);
+        }
+
+        return view('manager.attendance', compact('data'));
+    }
+
+    public function serv(){
+        $servs = ServiceChargeAllowance::all();
+
+        return view('manager.serv', compact('servs'));
+    }
+
+    public function overtime(){
+        $ot = StaffOvertimeAllowance::all();
+        $data = [];
+
+        foreach($ot as $o){
+            $staff = Staff::find($o->staffID);
+
+            $temp = [
+                'staff' => $staff,
+                'ot' => $o
+            ];
+            array_push($data, $temp);
+        }
+        return view('manager.overtime', compact('data'));
     }
 }

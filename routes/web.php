@@ -5,17 +5,25 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CustomerOfferController;
 use App\Http\Controllers\CustomerOrderController;
 use App\Http\Controllers\DineTableController;
+use App\Http\Controllers\EPFController;
 use App\Http\Controllers\headchef\HeadChefController;
 use App\Http\Controllers\host\HostController;
 use App\Http\Controllers\manager\ManagerController;
 use App\Http\Controllers\MenuItemController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\ETFController;
 
+use App\Http\Controllers\SalaryController;
+use App\Http\Controllers\ServiceChargeAllowanceController;
+use App\Http\Controllers\StaffAttendanceController;
 use App\Http\Controllers\StaffController;
+use App\Http\Controllers\StaffLeaveController;
+use App\Http\Controllers\StaffOvertimeAllowanceController;
 use App\Http\Controllers\SystemUserController;
 use App\Http\Controllers\ToppingController;
 use App\Models\MenuItem;
+use App\Models\StaffAttendance;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 
@@ -73,6 +81,13 @@ Route::get('/manager/order/history/{id}/view', [ManagerController::class, 'view_
 Route::get('/manager/view/feedback', [ManagerController::class, 'feedback'])->name('manager.feedback');
 Route::get('/manager/staff/view', [ManagerController::class, 'staff'])->name('manager.staff');
 Route::get('/manager/sysusers', [ManagerController::class, 'sysusers'])->name('manager.sysusers');
+Route::get('manager/salary', [ManagerController::class, 'salary'])->name('manager.salary');
+Route::get('manager/epf/view', [ManagerController::class, 'epf'])->name('manager.epf');
+Route::get('manager/etf/view', [ManagerController::class, 'etf'])->name('manager.etf');
+Route::get('/manager/leaves', [ManagerController::class, 'leaves'])->name('manager.leaves');
+Route::get('/manager/attendance', [ManagerController::class, 'attendance'])->name('manager.attendance');
+Route::get('/manager/serv/view', [ManagerController::class, 'serv'])->name('manager.serv');
+Route::get('/manager/overtime', [ManagerController::class, 'overtime'])->name('manager.overtime');
 
 //toppings
 Route::post('/topping/create', [ToppingController::class, 'create'])->name('topping.create');
@@ -94,6 +109,38 @@ Route::post('systemuser/create', [SystemUserController::class, 'store'])->name('
 Route::put('systemuser/{id}/update', [SystemUserController::class, 'update'])->name('systemuser.update');
 Route::delete('systemuser/{id}/delete', [SystemUserController::class, 'delete'])->name('systemuser.delete');
 
+//salary
+Route::post('/salary/create', [SalaryController::class, 'store'])->name('salary.store');
+Route::put('salary/{id}/update', [SalaryController::class, 'update'])->name('salary.update');
+Route::delete('salary/{id}/delete', [SalaryController::class, 'delete'])->name('salary.delete');
+
+//epf
+Route::post('/epf/create', [EPFController::class, 'store'])->name('epf.store');
+Route::put('/epf/{id}/update', [EPFController::class, 'update'])->name('epf.update');
+Route::delete('/epf/{id}/delete', [EPFController::class, 'delete'])->name('epf.delete');
+
+//etf
+Route::post('/etf/create', [ETFController::class, 'store'])->name('etf.store');
+Route::put('/etf/{id}/update', [ETFController::class, 'update'])->name('etf.update');
+Route::delete('/etf/{id}/delete', [ETFController::class, 'delete'])->name('etf.delete');
+
+//staff leave
+Route::post('/leave/create', [StaffLeaveController::class, 'store'])->name('leave.store');
+Route::put('/leave/{id}/update', [StaffLeaveController::class, 'update'])->name('leave.update');
+Route::delete('/leave/{id}/delete', [StaffLeaveController::class, 'delete'])->name('leave.delete');
+
+//staff attendance
+Route::post('/attendance/create', [StaffAttendanceController::class, 'store'])->name('attendance.store');
+Route::delete('/attendance/{id}/delete', [StaffAttendanceController::class, 'delete'])->name('attendance.delete');
+
+//serv charge
+Route::post('/serv/create', [ServiceChargeAllowanceController::class, 'store'])->name('serv.store');
+ROute::delete('/serv/{id}/delete', [ServiceChargeAllowanceController::class, 'delete'])->name('serv.delete');
+
+//staff overtime
+Route::post('/overtime/create', [StaffOvertimeAllowanceController::class, 'store'])->name('overtime.store');
+ROute::delete('/overtime/{id}/delete', [StaffOvertimeAllowanceController::class, 'delete'])->name('overtime.delete');
+
 
 //api-routes
 Route::get('api/get-customer-name', [CustomerController::class, 'getFullName'])->name('api.customer.name');
@@ -102,6 +149,10 @@ Route::get('/api/topping/{id}/get', [ToppingController::class, 'get'])->name('ap
 Route::get('/api/offer/{id}/get', [CustomerOfferController::class, 'get'])->name('api.offer.get');
 Route::get('/api/staff/{id}/get', [StaffController::class, 'get'])->name('api.staff.get');
 Route::get('api/systemuser/{id}/get', [SystemUserController::class, 'get'])->name('api.systemuser.get');
+Route::get('/api/salary/{id}/get', [SalaryController::class, 'get'])->name('api.salary.get');
+Route::get('/api/epf/{id}/get', [EPFController::class, 'get'])->name('api.epf.get');
+Route::get('/api/etf/{id}/get', [ETFController::class, 'get'])->name('api.etf.get');
+Route::get('/api/leave/{id}/get', [StaffLeaveController::class, 'get'])->name('api.leave.get');
 
 Route::post('/welcome', function(){
     return view('welcome');

@@ -88,13 +88,13 @@
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="{{route('manager.sysusers')}}">System Users</a></li>
                                 <li><a class="dropdown-item" href="{{route('manager.staff')}}">Staff</a></li>
-                                <li><a class="dropdown-item" href="#">Staff Leaves</a></li>
-                                <li><a class="dropdown-item" href="#">Staff Attendance</a></li>
-                                <li><a class="dropdown-item" href="#">Service Charge Allowance</a></li>
-                                <li><a class="dropdown-item" href="#">Staff ETF</a></li>
-                                <li><a class="dropdown-item" href="#">Staff EPF</a></li>
-                                <li><a class="dropdown-item" href="#">Salary</a></li>
-                                <li><a class="dropdown-item" href="#">Overtime</a></li>
+                                <li><a class="dropdown-item" href="{{route('manager.leaves')}}">Staff Leaves</a></li>
+                                <li><a class="dropdown-item" href="{{route('manager.attendance')}}">Staff Attendance</a></li>
+                                <li><a class="dropdown-item" href="{{route('manager.serv')}}">Service Charge Allowance</a></li>
+                                <li><a class="dropdown-item" href="{{route('manager.etf')}}">Staff ETF</a></li>
+                                <li><a class="dropdown-item" href="{{route('manager.epf')}}">Staff EPF</a></li>
+                                <li><a class="dropdown-item" href="{{route('manager.salary')}}">Salary</a></li>
+                                <li><a class="dropdown-item" href="{{route('manager.overtime')}}">Overtime</a></li>
                             </ul>
                         </li>
                 
