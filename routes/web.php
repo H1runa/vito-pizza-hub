@@ -63,6 +63,9 @@ Route::put('/menuitem/{id}/update', [MenuItemController::class, 'update'])->name
 Route::delete('/menuitem/{id}/delete', [MenuItemController::class, 'delete'])->name('menuitem.delete');
 Route::get('/manager/toppings', [ManagerController::class, 'toppings'])->name('manager.toppings');
 Route::get('/manager/offers', [ManagerController::class, 'offers'])->name('manager.offers');
+Route::get('/manager/returns', [ManagerController::class, 'returns'])->name('manager.returns');
+Route::post('/manager/returns/create', [ManagerController::class, 'add_return'])->name('manager.addreturn');
+Route::delete('/manager/returns/{id}/delete', [ManagerController::class, 'delete_return'])->name('manager.deletereturn');
 
 //toppings
 Route::post('/topping/create', [ToppingController::class, 'create'])->name('topping.create');

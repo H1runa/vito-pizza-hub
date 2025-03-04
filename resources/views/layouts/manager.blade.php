@@ -74,7 +74,7 @@
                                 Customer
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Customer Returns</a></li>
+                                <li><a class="dropdown-item" href="{{route('manager.returns')}}">Customer Returns</a></li>
                                 <li><a class="dropdown-item" href="#">Customer Order History</a></li>
                                 <li><a class="dropdown-item" href="#">Feedback (View)</a></li>
                             </ul>
