@@ -13,6 +13,7 @@ use App\Http\Controllers\MenuItemController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\ETFController;
+use App\Http\Controllers\SalesController;
 
 use App\Http\Controllers\SalaryController;
 use App\Http\Controllers\ServiceChargeAllowanceController;
@@ -140,6 +141,15 @@ ROute::delete('/serv/{id}/delete', [ServiceChargeAllowanceController::class, 'de
 //staff overtime
 Route::post('/overtime/create', [StaffOvertimeAllowanceController::class, 'store'])->name('overtime.store');
 ROute::delete('/overtime/{id}/delete', [StaffOvertimeAllowanceController::class, 'delete'])->name('overtime.delete');
+
+//reports
+Route::get('manager/reports/sales-week', [SalesController::class, 'salesByDay'])->name('report.sales.week');
+Route::get('manager/reports/sales-month', [SalesController::class, 'salesByMonth'])->name('report.sales.month');
+Route::get('manager/reports/item-week', [SalesController::class, 'salesByMenuItem'])->name('report.item.week');
+Route::get('manager/reports/item-month', [SalesController::class, 'salesByMenuItemMonth'])->name('report.item.month');
+Route::get('manager/reports/topping-week', [SalesController::class, 'salesByToppingWeek'])->name('report.topping.week');
+Route::get('manager/reports/topping-month', [SalesController::class, 'salesByToppingMonth'])->name('report.topping.month');
+
 
 
 //api-routes

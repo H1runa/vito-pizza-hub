@@ -36,6 +36,18 @@
             z-index: -1; /* Ensure overlay is behind the content */
         }
     </style>
+    {{-- Charts --}}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+
+    {{-- Chart styling --}}
+    <style>
+        .chart-container {
+          width: 80%; /* Adjust width as needed */
+          height: 400px; /* Adjust height as needed */
+          margin: 0 auto; /* Centers the container horizontally */
+        }
+      </style>
 
     
             
@@ -121,8 +133,12 @@
                                 Reports
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Item Trends Report</a></li>
-                                <li><a class="dropdown-item" href="#">Sales Report</a></li>
+                                <li><a class="dropdown-item" href="{{route('report.sales.week')}}">Sales Report (This Week)</a></li>
+                                <li><a class="dropdown-item" href="{{route('report.sales.month')}}">Sales Report (This Month)</a></li>   
+                                <li><a class="dropdown-item" href="{{route('report.item.week')}}">Item Trends Report (This Week)</a></li>                                
+                                <li><a class="dropdown-item" href="{{route('report.item.month')}}">Item Trends Report (This Month)</a></li> 
+                                <li><a class="dropdown-item" href="{{route('report.topping.week')}}">Topping Trends Report (This Week)</a></li> 
+                                <li><a class="dropdown-item" href="{{route('report.topping.month')}}">Topping Trends Report (This Month)</a></li> 
                             </ul>
                         </li>
                     </ul>
@@ -190,6 +206,10 @@
             });
         });
     </script>
+
+    {{-- Charts --}}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
 
     
 
