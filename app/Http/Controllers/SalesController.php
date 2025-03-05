@@ -14,36 +14,39 @@ class SalesController extends Controller
 {
 
 
+   
+
     public function salesByDay()
     {
-        
-        $invoices = CustomerInvoice::all();
+        // Get the start and end date of the current week
+        $startDate = Carbon::now()->startOfWeek()->format('Y-m-d');
+        $endDate = Carbon::now()->endOfWeek()->format('Y-m-d');
     
-        
-        $startDate = Carbon::now()->startOfWeek(); 
-        $endDate = Carbon::now()->endOfWeek(); 
+        // Fetch sales data by joining customerorder and customerinvoice
+        $salesData = DB::table('customerinvoice')
+            ->join('customerorder', 'customerorder.orderID', '=', 'customerinvoice.orderID')
+            ->select(DB::raw('DATE(customerorder.orderDate) as date'), DB::raw('SUM(customerinvoice.totalBill) as totalSales'))
+            ->whereBetween('customerorder.orderDate', [$startDate, $endDate])
+            ->groupBy(DB::raw('DATE(customerorder.orderDate)'))
+            ->orderBy('date', 'ASC')
+            ->get();
     
-        
+        // Convert sales data into an associative array with date as key
+        $salesMap = $salesData->pluck('totalSales', 'date')->toArray();
+    
+        // Generate all days of the current week
         $dates = [];
         $sales = [];
     
-        for ($date = $startDate; $date->lte($endDate); $date->addDay()) {
+        for ($date = Carbon::now()->startOfWeek(); $date->lte(Carbon::now()->endOfWeek()); $date->addDay()) {
             $formattedDate = $date->format('Y-m-d');
-            $dates[] = $formattedDate; 
-    
-            
-            $salesForDay = $invoices->filter(function($invoice) use ($formattedDate) {
-                
-                return Carbon::parse($invoice->orderDate)->startOfDay()->format('Y-m-d') == $formattedDate;
-            })->sum('totalBill'); 
-    
-            $sales[] = $salesForDay > 0 ? $salesForDay : 0; 
+            $dates[] = $formattedDate; // Store the date for the chart
+            $sales[] = $salesMap[$formattedDate] ?? 0; // Get the sales amount for this date or 0 if no sales
         }
-    
-        // dd($dates, $sales);
     
         return view('reports.sales_week', compact('dates', 'sales'));
     }
+
     
 
 public function salesByMonth()

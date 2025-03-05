@@ -100,7 +100,7 @@
                                     @continue
                                 @endif   
                                 <tr class="text-center align-middle">
-                                    <td>{{$o->customer->firstName.' '.$o->customer->lastName}}</td>
+                                    <td class="align-middle">{{($o->customer!=null?$o->customer->firstName:'').' '.($o->customer!=null?$o->customer->lastName:'')}}</td>
                                     <td>
                                         <button class="btn btn-info viewItemsBtn" data-id="{{$o->orderID}}">
                                             Items : {{$o->menuItems->count()}}
@@ -138,7 +138,7 @@
                                     @continue
                                 @endif   
                                 <tr class="text-center align-middle">
-                                    <td>{{$o->customer->firstName.' '.$o->customer->lastName}}</td>
+                                    <td class="align-middle">{{($o->customer!=null?$o->customer->firstName:'').' '.($o->customer!=null?$o->customer->lastName:'')}}</td>
                                     <td>
                                         <button class="btn btn-info viewItemsBtn" data-id="{{$o->orderID}}">
                                             Items : {{$o->menuItems->count()}}

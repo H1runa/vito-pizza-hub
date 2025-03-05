@@ -21,6 +21,7 @@
                             @endif
                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
                                 <div class="card shadow-sm">
+                                    <h5 class="card-title text-center">{{$item->itemName}}</h5>
                                     <!-- Image with padding -->
                                     <img src="{{ asset('storage/' . $item->image) }}" class="card-img-top p-3" alt="{{ $item->itemName }}" height='300' width="200">
                                     <div class="card-body">
@@ -41,10 +42,10 @@
                                                 <span>{{$item->size}}</span>
                                             </div>
                                             <!-- Availability -->
-                                            <div class="col-6 d-flex justify-content-between">
-                                                <strong>Availability:</strong>
-                                                <span>{{$item->availability}}</span>
-                                            </div>
+                                            {{-- <div class="col-6 d-flex justify-content-between">
+                                                <strong>Name:</strong>
+                                                <span>{{$item->itemName}}</span>
+                                            </div> --}}
                                         </div>
                                     </div>
                                     <div class="card-footer text-center m-0 p-0">

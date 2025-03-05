@@ -161,10 +161,7 @@ class CashierController extends Controller
         $offers = json_decode($offers);         
                 
 
-        $originalTotal = 0;        
-
-        //totalBill
-        $total = $originalTotal+($tax*($originalTotal/100))-$discounted+$servCharge;
+        $originalTotal = 0;                
 
         //making the order
         $currentTime = now()->format('H:i:s');
@@ -198,7 +195,8 @@ class CashierController extends Controller
                 'menuID' => $o->itemID
             ]);
         }        
-
+        //totalBill
+        $total = $originalTotal+($tax*($originalTotal/100))-$discounted+$servCharge;
 
         //making the invoice
         $invoice = CustomerInvoice::create([

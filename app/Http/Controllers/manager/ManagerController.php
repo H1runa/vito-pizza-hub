@@ -27,7 +27,20 @@ use Illuminate\Http\Request;
 class ManagerController extends Controller
 {
     public function dashboard(){
-        return view('manager.dashboard');
+        $att = StaffAttendance::all();
+        $data = [];
+        foreach ($att as $a){
+            $staff = Staff::find($a->staffID);
+
+            $temp = [
+                'staff' => $staff,
+                'attendance' => $a
+            ];
+
+            array_push($data, $temp);
+        }
+
+        return view('manager.attendance', compact('data'));
     }
 
     public function menu(){
